@@ -49,7 +49,7 @@
     \LARGE \textbf{КУРСОВОЙ ПРОЕКТ} \\[3ex]
     по дисциплине: «Математические модели» \\
     по теме: «Моделирование процесса параметрической идентификации динамического объекта» \\[3ex]
-    Вариант №39
+    Вариант №37
     }
 \end{center}
 
@@ -58,7 +58,7 @@
 \noindent Выполнил\\
 студент гр.23531/21\hfill
 \begin{minipage}{0.7\textwidth}
-    \hfill \uline{\hspace{3cm}} \hspace{1.1cm} С.А. Фомин
+    \hfill \uline{\hspace{3cm}} \hspace{1.1cm} Д.П. Буканов
 \end{minipage}
 
 \vspace{3ex}
@@ -71,7 +71,7 @@
 
 \vspace{3ex}
 
-\hfill \begin{minipage}{0.6\textwidth} \hfill «\uline{\hspace{1cm}}»\uline{\hspace{3cm}} 2016 г.\end{minipage}
+\hfill \begin{minipage}{0.6\textwidth} \hfill «\uline{\hspace{1cm}}»\uline{\hspace{3cm}} 2017 г.\end{minipage}
 
 \vfill
 
@@ -85,35 +85,38 @@
 \begin{center}
     ЗАДАНИЕ\\
     НА ВЫПОЛНЕНИЕ КУРСОВОГО ПРОЕКТА \\[1ex]
-    студенту группы 23531/21 Фомину С.А.
+    студенту группы 23531/22 Буканову Д. П.
 \end{center}
 
 \vspace{0.5cm}
 
 \begin{enumerate}
     \item
-        \textbf{Тема проекта (работы):} Моделирование процесса параметрической идентификации динамического объекта, вариант №39
+        \textbf{Тема проекта (работы):} Моделирование процесса параметрической идентификации динамического объекта, вариант №37
     \item
         \textbf{Срок сдачи студентом законченного проекта (работы):} 30.12.2017
     \item
         \textbf{Исходные данные к проекту (работе):}
-            $$W(s) = \frac{k(1-as)}{(1+as)(1+b_1s+b_2s^2)}$$
+            $$
+                W(S) = \frac{k(1-a_1s)(1+a_2s)}{(1+b_1s)(1+b_2s)^2}
+            $$
             $$
                 \begin{matrix}
                     \begin{aligned}
-                        x(t) = 5 \\
+                        x(t) = const = 2 \\
                         k = 4 \\
-                        a = 3 \\
-                        b_1 = 1 \\
-                        b_2 = 2
+                        a_1 = 4 \\
+                        a_2 = 6 \\
+                        b_1 = 2 \\
+                        b_2 = 4
                     \end{aligned}
                     &
                     \hspace{3cm}
                     \begin{aligned}
-                        \text{метод оптимизации}&: \text{Гаусса-Зейделя $(GZ_1)$} \\
+                        \text{метод оптимизации}&: \text{покоординатный спуск} \\
                         \text{целевая функция}&: \text{2} \\
-                        \text{шум}&: \text{2} \\
-                        \text{считать неизвестными}&: \text{$k, b_1$} \\
+                        \text{шум}&: \text{3} \\
+                        \text{считать неизвестными}&: \text{$a_1, k$} \\
                     \end{aligned}
                 \end{matrix}
             $$
@@ -133,7 +136,7 @@
 \vspace{1cm}
 
 \noindent \textbf{Задание принял к исполнению} \hfill
-\hfill \uline{\hspace{3cm}} \hspace{1.7cm} Фомин С.А.
+\hfill \uline{\hspace{3cm}} \hspace{1.7cm} Буканов Д.П.
 
 % \newpage
 % \tableofcontents
@@ -143,7 +146,7 @@
 \section{Составление системы дифференциальных уравнений}
 
 $$
-    W(s) = \frac{k(1-as)}{(1+as)(1+b_1s+b_2s^2)} = \frac{P(s)}{Q(s)}
+    W(s) = \frac{k(1-a_1s)(1+a_2s)}{(1+b_1s)(1+b_2s)^2} = \frac{P(s)}{Q(s)}
 $$
 
 \vspace{1cm}
@@ -156,9 +159,9 @@ $$
     \end{cases}
     \Rightarrow
     \begin{cases}
-        y(s) = k(1-as) \cdot u(s)
+        y(s) = k(1-a_1s)(1+a_2s) \cdot u(s)
         \\
-        x(s) = (1+as)(1+b_1s+b_2s^2) \cdot u(s)
+        x(s) = (1+b_1s)(1+b_2s)^2 \cdot u(s)
     \end{cases}
 $$
 
@@ -167,13 +170,14 @@ $$
 $$
     \begin{aligned}
         y(s)
-        &= k(1-as) \cdot u(s) \\
-        &= (k-kas) \cdot u(s) \\
-        &= ku(s) - kasu(s)
+        &= k(1-a_1s)(1+a_2s) \cdot u(s) \\
+        &= k(1 - a_1a_2s^2-a_1s + a_2s) \cdot u(s) \\
+        &= ku(s) - ka_1su(s) + ka_2su(s) - ka_1a_2s^2u(s) 
         \\\\
         x(s)
-        &= (1+b_1s + b_2s^2 + as + b_1sas + asb_2s^2) \cdot u(s) \\
-        &= u(s) + b_1su(s) + b_2s^2u(s) + asu(s) + b_1as^2u(s) + as^3b_2u(s)
+        &= ((1+b_1s)(1+b_2s)^2) \cdot u(s) \\
+        &= ((1+b_1s)(1+2b_2s + b_2^2s^2)) \cdot u(s) \\
+        &= u(s) + b_1su(s) + 2b_2su(s) + b_2^2s^2u(s) + 2b_1b_2s^2u(s) + b_1b_2^2s^3u(s)
     \end{aligned}
 $$
 
@@ -197,9 +201,9 @@ $$
 
 $$
     \begin{aligned}
-        y(t) &= ku(t) - ka\dot{u}(t)
+        y(t) &= ku(t) - ka_1\dot{u}(t) + ka_2\dot{u}(t) - ka_1a_2\ddot{u}(t)
         \\
-        x(t) &= u(t) + b_1\dot{u}(t) + b_2\ddot{u}(t) + a\dot{u}(t) + ab_1\ddot{u}(t) + ab_2\dddot{u}(t)
+        x(t) &= u(t) + 2b_2\dot{u}(t) + b_1\dot{u}(t) + b_2^2\ddot{u}(s) + 2b_1b_2\ddot{u}(t) + b_1b_2^2\dddot{u}(t)
     \end{aligned}
 $$
 
@@ -208,9 +212,9 @@ $$
 $$
     \begin{aligned}
         \dddot{u}(t)
-        &= \frac{1}{ab_2} \cdot (x(t) - u(t) - b_1\dot{u}(t) - b_2\ddot{u}(t) - a\dot{u}(t) - ab_1\ddot{u}(t))
+        &= \frac{1}{b_1b_2^2} \cdot (u(t) + 2b_2\dot{u}(t) + b_1\dot{u}(t) + b_2^2\ddot{u}(t) + 2b_1b_2\ddot{u}(t) - x(t))
         \\
-        &= \frac{1}{ab_2} \cdot \underbrace{(x(t) - u(t) - (b_1 + a)\dot{u}(t) - (b_2 + ab_1)\ddot{u}(t))}_{\Omega}
+        &= \frac{1}{b_1b_2^2} \cdot \underbrace{u(t) + 2b_2\dot{u}(t) + b_1\dot{u}(t) + b_2^2\ddot{u}(t) + 2b_1b_2\ddot{u}(t) - x(t)}_{\Omega}
     \end{aligned}
 $$
 
@@ -234,12 +238,17 @@ $$
             \\
             \dot{z_2} &= z_3
             \\
-            \dot{z_3} &= \dfrac{\Omega}{ab_2}
+            \dot{z_3} &= \dfrac{\Omega}{b_1b_2^2}
         \end{aligned}
         &
         \Rightarrow
         &
-        y(t) = kz_1 - kaz_2
+        \begin{aligned}
+        y(t)
+        &= k \cdot z_{1} - k \cdot a_1 \cdot a_2 \cdot z_{3} - k \cdot a_1 \cdot z_{2} + k \cdot a_2 \cdot z_{2}
+        \\
+        &= k \cdot (z_{1} - a_1 \cdot a_2 \cdot z_{3} - a_1 \cdot z_{2} + a_2 \cdot z_{2})
+        \end{aligned}
     \end{matrix}
 $$
 
@@ -255,7 +264,12 @@ $$
 $$
 
 $$
-    y(s) = kz_{1,n} - kaz_{2,n} = k(z_{1,n} - az_{2,n})
+    \begin{aligned}
+        y(s)
+        &= k \cdot z_{1,n} - k \cdot a_1 \cdot a_2 \cdot z_{3,n} - k \cdot a_1 \cdot z_{2,n} + k \cdot a_2 \cdot z_{2,n}
+        \\
+        &= k \cdot (z_{1,n} - a_1 \cdot a_2 \cdot z_{3,n} - a_1 \cdot z_{2,n} + a_2 \cdot z_{2,n})
+    \end{aligned}
 $$
 
 \section{График и таблица значений}
@@ -306,10 +320,14 @@ $$
 
 \section{Проверка}
 
-При $x(t) = const (C) = 5$ и $k = 4$
+При $x(t) = const (C) = 2$ и $k = 4$
 
 $$
-    \lim_{s\to0}CW(s) = C \cdot \lim_{s\to0}\left(\dfrac{k\overbrace{(1-as)}^{\to1}}{\underbrace{(1+as)}_{\to1}\underbrace{(1+b_1s+b_2s^2)}_{\to1}}\right) = C \cdot k = 4 \cdot 5 = 20
+    \lim_{s\to0}CW(s) = C \cdot \lim_{s\to0}\left(\dfrac{
+        k\overbrace{(1-a_1s)}^{\to1}\overbrace{(1+a_2s)}^{\to1}
+    }{
+        \underbrace{(1+b_1s)}_{\to1}\underbrace{(1+b_2s)^2}_{\to1}
+    }\right) = C \cdot k = 2 \cdot 4 = 8
 $$
 
 \end{document}

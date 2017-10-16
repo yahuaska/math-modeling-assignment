@@ -1,8 +1,8 @@
 .PHONY:calc pdf clean
 TEX = pdflatex
-CALC = ./calc.js
+CALC = ./calc
 
-all:pdf calc clean
+all:pr1 calc pdf clean
 
 
 calc:
@@ -30,3 +30,6 @@ clean:
 	*.out *.pdf *.snm *.vrb *.toc  \
 	*.log *.lol *.lot *.nav *.bak  \
 	*.loa *.thm
+
+pr1:
+	gcc -o calc -Wall -O3 program1.cpp
