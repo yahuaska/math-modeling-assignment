@@ -304,21 +304,23 @@ $$
 
         \end{axis}
     \end{tikzpicture}
-    \pgfplotstabletypeset[
-        col sep=space,
-        header=true,
-        columns/0/.style = {
-            string type,
-            column name = $t$
-            },
-        columns/1/.style = {
-            column name=$y(t)$,
-            fixed,
-            fixed zerofill,
-            precision=11,
-            dec sep align
-        }
-    ]{data/points.dat}
+    % \pgfplotstabletypeset[
+    %     begin table=\begin{longtable},
+    %     end table=\end{longtable},
+    %     col sep=space,
+    %     header=true,
+    %     columns/0/.style = {
+    %         string type,
+    %         column name = $t$
+    %         },
+    %     columns/1/.style = {
+    %         column name=$y(t)$,
+    %         fixed,
+    %         fixed zerofill,
+    %         precision=11,
+    %         dec sep align
+    %     }
+    % ]{data/points.dat}
 \end{center}
 
 \section{Проверка}
@@ -333,16 +335,21 @@ $$
     }\right) = C \cdot k = 2 \cdot 4 = 8
 $$
 
-\section{Часть 2. Проверка алгоритма оптимизации.}
-\subsection{Проверка метода оптимизации на функции эллипса}
+\section{Вывод}
+Конечным результатом вычислений стал вектор точек $y_T$. Для этого была составлена система дифференциальных уравнений (СДУ), затем она была решена методом Эйлера. Были найдены точки и по этим точкам был построен график функции, после чего были сверены результаты с помощью проверки, при помощи нахождения предела функции. 
+
+\newpage
+\part{Проверка алгоритма оптимизации.}
+\setcounter{section}{0}
+\section{Проверка метода оптимизации на функции эллипса}
 Видно, что функция стремится к минимум при аргументах стремящимся к (0;0).
 \begin{center}
     \begin{tikzpicture}
         \begin{axis}[
             width=16cm,
             height=16cm,
-            xlabel=t,
-            ylabel=y(t),
+            xlabel=x,
+            ylabel=y(,
             minor tick num = 1,
             grid = both
         ]
@@ -357,15 +364,15 @@ $$
     \end{tikzpicture}
 \end{center}
 
-\subsection{Проверка метода оптимизации на функции Розенброка}
+\section{Проверка метода оптимизации на функции Розенброка}
 Видно, что функция стремится к минимум при аргументах стремящимся к (1;1).
 \begin{center}
     \begin{tikzpicture}
         \begin{axis}[
             width=16cm,
             height=10cm,
-            xlabel=t,
-            ylabel=y(t),
+            xlabel=x,
+            ylabel=y,
             minor tick num = 1,
             grid = both
         ]
@@ -375,32 +382,14 @@ $$
     \end{tikzpicture}
 \end{center}
 
+\subsection{Вывод}
+Во второй главе был реализован алгоритм покоординатного спуска оптимизации функции. Алгоритм был проверен на двух тестовых функциях: функции эллипсоида и функции Розенброка. С функцией эллипсоида алгоритм успешно справился, а также приблизительно нашёл точку минимума в функции Розенброка. Делая вывод, можно сказать, что алгоритм успешно справляется с простыми функциями и подходит для исследования поставленной в курсовом проекте функции. 
 
-\section{Часть 3. Добавление шума.}
-\subsection{Проверка генератора случайных чисел.}
 
-\includegraphics{rnd1}
-
-График показывает, что распределение генерируемых значений близко к Гауссовому.
-
-Шум генерируем по формуле:
-$$
-\Delta y = max|y(t)| \cdot \begin{Bmatrix}
-        0,05 \\
-        0,1 \\
-        0,2
-    \end{Bmatrix} 
-$$
-
-$$y(t)_{max} = 7.873587$$
-
-$$
-\Delta y = max|y(t)| \cdot \begin{Bmatrix}
-        0.39367935 \\
-        0.7873587 \\
-        1.5747174
-    \end{Bmatrix} 
-$$
+\newpage
+\part{Добавление шума}
+\setcounter{section}{0}
+\section{Проверка генератора случайных чисел.}
 
 \begin{center}
     \begin{tikzpicture}
@@ -417,9 +406,30 @@ $$
             \addplot[ybar,fill,color=red] table{data/rnd.dat};
         \end{axis}
     \end{tikzpicture}
+    График показывает, что распределение генерируемых значений близко к Гауссовому.
 \end{center}
 
-Шум
+\section{Генерация шума.}
+Коэфициенты для генерации шума:
+$$
+\Delta y = max|y(t)| \cdot \begin{Bmatrix}
+        0,05 \\
+        0,1 \\
+        0,2
+    \end{Bmatrix} 
+$$
+
+Максимальное значение y(t):
+$$y(t)_{max} = 7.873587$$
+
+Шум генерируем по формуле:
+$$
+\Delta y = max|y(t)| \cdot \begin{Bmatrix}
+        0.39367935 \\
+        0.7873587 \\
+        1.5747174
+    \end{Bmatrix} 
+$$
 
 \begin{center}
     \begin{tikzpicture}
@@ -440,28 +450,73 @@ $$
     \end{tikzpicture}
 \end{center}
 
-\section{Часть 4.}
+\section{Вывод}
+Был создан генератор случайных чисел с нормальным распределением. Он был проверен с помощью гистограммы. Также было сформировано три вектора $y_e$.
+
+В итоге были выведены сводные данные по четырем функциям в одном графике. 
+
+\newpage
+\part{Оптимизация целевой функции}
+\setcounter{section}{0}
+\section{Оптимизация целевой функции}
+Целевая функция:
 $$
 \Delta y = \sum_{i=0}^n (Y_i^E - Y_i^m)^2
 $$
 
-\begin{center}
-    \begin{tikzpicture}
-        \begin{axis}[
-            width=16cm,
-            height=10cm,
-            xlabel=t,
-            ylabel=y(t),
-            minor tick num = 1,
-            grid = both
-        ]
+ Неизвестными параметрами являются a1, k. Необходимо оптимизировать целевую функцию так, чтобы значение было минимальным. Для этого используется ранее написанный алгоритм оптимизации, применённый к целевой функции. На каждой итерации мы будут изменяться параметры для расчета нового $y_M$. Значения остальных переменных остаются такими же, как и при подсчете теоретических значений.
 
-            \addplot[color=red] table {data/noise/1.dat};
-            \addplot[ color=green] table {data/tf/1.dat};
-        \end{axis}
-    \end{tikzpicture}
+Оптимизация будет проходить для трех функций $y_{e1}$, $y_{e2}$ и $y_{e3}$. В результате оптимизации мы получаем три пары значений аргументов.
+
+\begin{center}
+  \begin{tabular}{ | l | c | r | }
+    \hline
+    \text{} & $a_1$ & k \\ \hline
+    $y_{e1}$ & 2.98 & 3.99 \\ \hline
+    $y_{e2}$ & 3.1 & 3.98 \\ \hline
+    $y_{e2}$ & 3.02 & 4.02 \\ \hline
+    y целевая & 3.03 & 3.99 \\
+    \hline
+  \end{tabular}
 \end{center}
 
+После этого необходимо найти среднее значение a1 и k, которые получились в ходе оптимизации, и по этим значениям строится график функции. Для того чтобы сравнить $y_T$ и $y_M$ строится совместный график. 
+
+% \begin{center}
+%     \begin{tikzpicture}
+%         \begin{axis}[
+%             width=16cm,
+%             height=10cm,
+%             xlabel=t,
+%             ylabel=y(t),
+%             minor tick num = 1,
+%             grid = both
+%             ]
+
+%             \addplot[color=red] table {data/noise/1.dat};
+%             \addplot[ color=green] table {data/tf/1.dat};
+%         \end{axis}
+%     \end{tikzpicture}
+% \end{center}
+
+% \begin{center}
+%     \begin{tikzpicture}
+%         \begin{axis}[
+%             width=16cm,
+%             height=10cm,
+%             xlabel=t,
+%             ylabel=y(t),
+%             minor tick num = 1,
+%             grid = both
+%         ]
+
+%             \addplot[color=red] table {data/noise/2.dat};
+%             \addplot[ color=green] table {data/tf/2.dat};
+%         \end{axis}
+%     \end{tikzpicture}
+% \end{center}
+
+\section{Построение графика}
 \begin{center}
     \begin{tikzpicture}
         \begin{axis}[
@@ -473,29 +528,14 @@ $$
             grid = both
         ]
 
-            \addplot[color=red] table {data/noise/2.dat};
-            \addplot[ color=green] table {data/tf/2.dat};
-        \end{axis}
-    \end{tikzpicture}
-\end{center}
-
-\begin{center}
-    \begin{tikzpicture}
-        \begin{axis}[
-            width=16cm,
-            height=10cm,
-            xlabel=t,
-            ylabel=y(t),
-            minor tick num = 1,
-            grid = both
-        ]
-
-            \addplot[color=red] table {data/noise/3.dat};
+            \addplot[color=red] table {data/noise/0.dat};
             \addplot[ color=green] table {data/tf/3.dat};
         \end{axis}
     \end{tikzpicture}
 \end{center}
 
+\section{Вывод}
 
+В четвертой главе была оптимизирована целевую функцию, используя ранее написанный метод оптимизации. Усреднённые получившиеся значения по 3 функциям были использованы для построения графика  $y_M$.
 
 \end{document}
