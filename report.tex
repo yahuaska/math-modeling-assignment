@@ -12,8 +12,11 @@
 \usepackage{geometry}
 \usepackage{amsmath}
 \usepackage{titlesec}
+\usepackage{graphicx}
+\graphicspath{ {data/} }
 
 \usepgfplotslibrary{units}
+\usepgfplotslibrary{patchplots}
 \pgfplotsset{compat=1.10}
 \geometry{left=25mm, right=10mm, top=20mm, bottom=20mm}
 
@@ -121,7 +124,7 @@
                 \end{matrix}
             $$
     \item
-        \textbf{Содержание пояснительной записки (перечень подлежащих разработке вопросов):} введение, основная часть (раскрывается структура основной части), заключение, список использованных источников, приложения, нахождение $y^T$, создание и проверка ГСЧ с помощью гистограмм, формирование шума и $y^\epsilon$, реализация алгоритма оптимизации и проверка на тостовых функциях, нахождение $m^M$ и целевой функции $(CF)$, её оптимизация. Примерный объем пояснительной записки 28 страниц машинописного текста
+        введение, основная часть (раскрывается структура основной части), заключение, список использованных источников, приложения, нахождение $y^T$, создание и проверка ГСЧ с помощью гистограмм, формирование шума и $y^\epsilon$, реализация алгоритма оптимизации и проверка на тестовых функциях, нахождение $m^M$ и целевой функции $(CF)$, её оптимизация. Примерный объем пояснительной записки 28 страниц машинописного текста
     \item
         \textbf{Консультанты:} Леонтьева Т.В.
     \item
@@ -280,7 +283,7 @@ $$
         samples = 100,
         mark = *,
         mark options = {
-            scale = 0.4
+            scale = 0.1
         },
         line width = 0.5mm
     }
@@ -297,7 +300,7 @@ $$
             grid = both
         ]
 
-        \addplot[gr1] table {data/points.dat};
+        \addplot[color=blue] table {data/points.dat};
 
         \end{axis}
     \end{tikzpicture}
@@ -329,5 +332,170 @@ $$
         \underbrace{(1+b_1s)}_{\to1}\underbrace{(1+b_2s)^2}_{\to1}
     }\right) = C \cdot k = 2 \cdot 4 = 8
 $$
+
+\section{Часть 2. Проверка алгоритма оптимизации.}
+\subsection{Проверка метода оптимизации на функции эллипса}
+Видно, что функция стремится к минимум при аргументах стремящимся к (0;0).
+\begin{center}
+    \begin{tikzpicture}
+        \begin{axis}[
+            width=16cm,
+            height=16cm,
+            xlabel=t,
+            ylabel=y(t),
+            minor tick num = 1,
+            grid = both
+        ]
+
+            \draw (0,0) circle[radius=2];
+            \draw (0,0) circle[radius=5];
+            \draw (0,0) circle[radius=10];
+
+            \addplot[color=red] table {data/points2.dat};
+
+        \end{axis}
+    \end{tikzpicture}
+\end{center}
+
+\subsection{Проверка метода оптимизации на функции Розенброка}
+Видно, что функция стремится к минимум при аргументах стремящимся к (1;1).
+\begin{center}
+    \begin{tikzpicture}
+        \begin{axis}[
+            width=16cm,
+            height=10cm,
+            xlabel=t,
+            ylabel=y(t),
+            minor tick num = 1,
+            grid = both
+        ]
+
+            \addplot[color=red] table {data/points3.dat};
+        \end{axis}
+    \end{tikzpicture}
+\end{center}
+
+
+\section{Часть 3. Добавление шума.}
+\subsection{Проверка генератора случайных чисел.}
+
+\includegraphics{rnd1}
+
+График показывает, что распределение генерируемых значений близко к Гауссовому.
+
+Шум генерируем по формуле:
+$$
+\Delta y = max|y(t)| \cdot \begin{Bmatrix}
+        0,05 \\
+        0,1 \\
+        0,2
+    \end{Bmatrix} 
+$$
+
+$$y(t)_{max} = 7.873587$$
+
+$$
+\Delta y = max|y(t)| \cdot \begin{Bmatrix}
+        0.39367935 \\
+        0.7873587 \\
+        1.5747174
+    \end{Bmatrix} 
+$$
+
+\begin{center}
+    \begin{tikzpicture}
+        \begin{axis}[
+            width=16cm,
+            height=10cm,
+            xlabel=v,
+            ylabel=\#,
+            minor tick num = 1,
+            grid = both,
+            ymin=0
+        ]
+
+            \addplot[ybar,fill,color=red] table{data/rnd.dat};
+        \end{axis}
+    \end{tikzpicture}
+\end{center}
+
+Шум
+
+\begin{center}
+    \begin{tikzpicture}
+        \begin{axis}[
+            width=16cm,
+            height=10cm,
+            xlabel=t,
+            ylabel=y(t),
+            minor tick num = 1,
+            grid = both
+        ]
+
+            \addplot[ color=red] table {data/noise/0.dat};
+            \addplot[ color=green] table {data/noise/1.dat};
+            \addplot[ color=blue] table {data/noise/2.dat};
+            \addplot[ color=black] table {data/noise/3.dat};
+        \end{axis}
+    \end{tikzpicture}
+\end{center}
+
+\section{Часть 4.}
+$$
+\Delta y = \sum_{i=0}^n (Y_i^E - Y_i^m)^2
+$$
+
+\begin{center}
+    \begin{tikzpicture}
+        \begin{axis}[
+            width=16cm,
+            height=10cm,
+            xlabel=t,
+            ylabel=y(t),
+            minor tick num = 1,
+            grid = both
+        ]
+
+            \addplot[color=red] table {data/noise/1.dat};
+            \addplot[ color=green] table {data/tf/1.dat};
+        \end{axis}
+    \end{tikzpicture}
+\end{center}
+
+\begin{center}
+    \begin{tikzpicture}
+        \begin{axis}[
+            width=16cm,
+            height=10cm,
+            xlabel=t,
+            ylabel=y(t),
+            minor tick num = 1,
+            grid = both
+        ]
+
+            \addplot[color=red] table {data/noise/2.dat};
+            \addplot[ color=green] table {data/tf/2.dat};
+        \end{axis}
+    \end{tikzpicture}
+\end{center}
+
+\begin{center}
+    \begin{tikzpicture}
+        \begin{axis}[
+            width=16cm,
+            height=10cm,
+            xlabel=t,
+            ylabel=y(t),
+            minor tick num = 1,
+            grid = both
+        ]
+
+            \addplot[color=red] table {data/noise/3.dat};
+            \addplot[ color=green] table {data/tf/3.dat};
+        \end{axis}
+    \end{tikzpicture}
+\end{center}
+
+
 
 \end{document}
